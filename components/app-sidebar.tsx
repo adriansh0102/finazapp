@@ -24,6 +24,7 @@ import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useTranslation } from "@/hooks/use-translation"
 import { useSidebar } from "@/components/ui/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import Image from "next/image"
 
 interface SidebarItemProps {
   icon: React.ElementType
@@ -155,9 +156,11 @@ export function AppSidebar() {
   const MobileSidebar = (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="left" className="p-0">
-        <div className="flex h-16 items-center border-b px-4">
-          <div className="text-xl font-bold">FinanzApp</div>
-        </div>
+      <div className="flex h-16 items-center px-4">
+        <Image src="favicon.png" alt="Logo" width={48} height={48} />
+        <div className="text-xl font-bold px-4">FinanzApp</div>
+      </div>
+        
         <ScrollArea className="h-[calc(100vh-4rem)]">
           <div className="px-2 py-4">
             {sidebarItems.map((item) => (
@@ -179,8 +182,9 @@ export function AppSidebar() {
   // Desktop sidebar
   const DesktopSidebar = (
     <div className="hidden border-r bg-background md:block md:w-64">
-      <div className="flex h-16 items-center border-b px-4">
-        <div className="text-xl font-bold">FinanzApp</div>
+      <div className="flex h-16 items-center px-4">
+        <Image src="favicon.png" alt="Logo" width={48} height={48} />
+        <div className="text-xl font-bold px-4">FinanzApp</div>
       </div>
       <ScrollArea className="h-[calc(100vh-4rem)]">
         <div className="px-2 py-4">
