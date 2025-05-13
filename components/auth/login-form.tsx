@@ -51,7 +51,7 @@ export function LoginForm() {
 
   return (
     <Card className="w-full animate-in fade-in-50 duration-500">
-      <CardHeader className="space-y-1">
+      <CardHeader className="space-y-1 flex flex-col items-center">
         <Image src="favicon.png" alt="Logo" width={80} height={80} className="mx-auto mb-4" />
         <CardTitle className="text-2xl font-bold">Iniciar sesión</CardTitle>
         <CardDescription>Ingresa tus credenciales para acceder a tu cuenta</CardDescription>
