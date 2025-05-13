@@ -351,12 +351,7 @@ export function DataTableDemo() {
   }, [pageSize, table])
 
   return (
-    <div className="container mx-auto py-10 space-y-8 animate-in fade-in-50 duration-500">
-      <div className="space-y-4">
-        <h1 className="text-3xl font-bold">Tabla de Datos</h1>
-        <p className="text-muted-foreground">Ejemplo de tabla con paginación, ordenamiento, filtrado y acciones.</p>
-      </div>
-
+    <div className="w-full space-y-8">
       <Card>
         <CardHeader>
           <CardTitle>Pagos</CardTitle>
@@ -434,52 +429,64 @@ export function DataTableDemo() {
               </div>
             </div>
 
-            <div className="rounded-md border overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => {
-                        return (
-                          <TableHead key={header.id}>
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(header.column.columnDef.header, header.getContext())}
-                          </TableHead>
-                        )
-                      })}
-                    </TableRow>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id}>
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            <div className="rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+              <div className="overflow-x-auto">
+                <div className="min-w-[300px]">
+                  <Table>
+                    <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+                      {table.getHeaderGroups().map((headerGroup) => (
+                        <TableRow key={headerGroup.id}>
+                          {headerGroup.headers.map((header) => {
+                            return (
+                              <TableHead 
+                                key={header.id} 
+                                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400 whitespace-nowrap"
+                              >
+                                {header.isPlaceholder
+                                  ? null
+                                  : flexRender(header.column.columnDef.header, header.getContext())}
+                              </TableHead>
+                            )
+                          })}
+                        </TableRow>
+                      ))}
+                    </TableHeader>
+                    <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05] text-gray-400">
+                      {table.getRowModel().rows?.length ? (
+                        table.getRowModel().rows.map((row) => (
+                          <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                            {row.getVisibleCells().map((cell) => (
+                              <TableCell 
+                                key={cell.id} 
+                                className="px-5 py-4 sm:px-6 text-start whitespace-nowrap"
+                              >
+                                <div className="flex items-center gap-3">
+                                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </div>
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={columns.length} className="h-24 text-center">
+                            No se encontraron resultados.
                           </TableCell>
-                        ))}
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={columns.length} className="h-24 text-center">
-                        No se encontraron resultados.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-              <div className="flex items-center gap-2">
-                <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-3 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                <p className="text-sm text-gray-700 dark:text-gray-300 text-center sm:text-left">
                   Mostrando página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
                 </p>
-                <div className="flex items-center space-x-2">
-                  <p className="text-sm text-muted-foreground">Filas por página</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Filas por página:</span>
                   <Select value={pageSize.toString()} onValueChange={(value) => setPageSize(Number(value))}>
                     <SelectTrigger className="h-8 w-[70px]">
                       <SelectValue placeholder={pageSize} />
@@ -494,7 +501,7 @@ export function DataTableDemo() {
                   </Select>
                 </div>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
                 <Button
                   variant="outline"
                   size="sm"
@@ -503,7 +510,12 @@ export function DataTableDemo() {
                 >
                   Anterior
                 </Button>
-                <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
                   Siguiente
                 </Button>
               </div>
