@@ -6,6 +6,9 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider } from "@/components/language-provider"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { cn } from "@/lib/utils"
+import ClientWrapper from "./api/auth/components/ClientWrapper"
+import { Toaster } from "@/components/ui/toaster"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -37,10 +40,16 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={cn(inter.className, "overflow-x-hidden")}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <LanguageProvider>
-            <SidebarProvider>{children}</SidebarProvider>
-          </LanguageProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ClientWrapper>
+            <LanguageProvider>
+              <SidebarProvider>
+               
+                {children}
+              </SidebarProvider>
+            </LanguageProvider>
+          </ClientWrapper>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import Image from "next/image"
+import { login } from "@/app/api/services/auth.service"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Ingresa un correo electrónico válido" }),
@@ -36,17 +37,26 @@ export function LoginForm() {
   })
 
   async function onSubmit(data: LoginFormValues) {
-    setIsLoading(true)
-
-    // Simulación de inicio de sesión
-    setTimeout(() => {
-      setIsLoading(false)
+    try {
+      setIsLoading(true)
+      // Aquí iría tu lógica de autenticación
+      const response = await login(data.email, data.password)
+      
       toast({
         title: "Inicio de sesión exitoso",
         description: "Bienvenido a FinanzApp",
       })
-      router.push("/")
-    }, 1500)
+      
+      router.push("/dashboard") // O la ruta que prefieras después del login
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo iniciar sesión. Por favor, verifica tus credenciales.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -106,7 +116,11 @@ export function LoginForm() {
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button
+              type="submit" 
+              className="w-full" 
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
