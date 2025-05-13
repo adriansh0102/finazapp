@@ -63,6 +63,7 @@ export function ComponentsShowcase() {
   const [date, setDate] = useState<Date>()
   const [progress, setProgress] = useState(13)
   const [isLoading, setIsLoading] = useState(false)
+  const [spinnerSize, setSpinnerSize] = useState("default")
 
   // Simular progreso
   const simulateProgress = () => {
@@ -85,7 +86,14 @@ export function ComponentsShowcase() {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
-    }, 2000)
+    }, 9000)
+  }
+
+  const spinnerSizes = {
+    sm: "h-4 w-4",
+    default: "h-8 w-8",
+    lg: "h-12 w-12",
+    xl: "h-16 w-16",
   }
 
   return (
@@ -263,6 +271,7 @@ export function ComponentsShowcase() {
                       toast({
                         title: "Éxito",
                         description: "La operación se ha completado correctamente.",
+                        duration: 3000,
                       })
                     }}
                   >
@@ -275,6 +284,7 @@ export function ComponentsShowcase() {
                         variant: "destructive",
                         title: "Error",
                         description: "Ha ocurrido un error al procesar tu solicitud.",
+                        duration: 3000,
                       })
                     }}
                   >
@@ -308,9 +318,11 @@ export function ComponentsShowcase() {
                       </DialogDescription>
                     </DialogHeader>
                     <DialogFooter className="flex flex-col sm:flex-row sm:justify-end gap-2 mt-4">
-                      <Button variant="outline" type="button">
-                        Cancelar
-                      </Button>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" type="button">
+                          Cancelar
+                        </Button>
+                      </DialogTrigger>
                       <Button variant="destructive" type="button">
                         Confirmar
                       </Button>
@@ -681,6 +693,29 @@ export function ComponentsShowcase() {
               </div>
 
               <div className="space-y-4">
+                <h3 className="text-lg font-medium">Loading Spinner</h3>
+                <div className="flex flex-col items-center justify-center space-y-8">
+                  <div className="relative flex items-center justify-center">
+                    <div className={`${spinnerSizes[spinnerSize as keyof typeof spinnerSizes]} animate-spin rounded-full border-4 border-primary border-t-transparent`} />
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <Label htmlFor="spinner-size">Tamaño del spinner:</Label>
+                    <Select value={spinnerSize} onValueChange={setSpinnerSize}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Selecciona un tamaño" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sm">Pequeño</SelectItem>
+                        <SelectItem value="default">Mediano</SelectItem>
+                        <SelectItem value="lg">Grande</SelectItem>
+                        <SelectItem value="xl">Extra grande</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
                 <h3 className="text-lg font-medium">Skeleton</h3>
                 <div className="space-y-2">
                   <div className="space-y-3">
@@ -693,6 +728,103 @@ export function ComponentsShowcase() {
                     <div className="space-y-2">
                       <Skeleton className="h-4 w-[150px]" />
                       <Skeleton className="h-4 w-[100px]" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4 pt-6">
+                  <h4 className="text-sm font-medium">Tabla de transacciones</h4>
+                  <div className="rounded-md border">
+                    <div className="border-b p-3 bg-muted/50">
+                      <div className="grid grid-cols-5 gap-4">
+                        <Skeleton className="h-6 w-[100px]" />
+                        <Skeleton className="h-6 w-[120px]" />
+                        <Skeleton className="h-6 w-[80px]" />
+                        <Skeleton className="h-6 w-[100px]" />
+                        <Skeleton className="h-6 w-[60px]" />
+                      </div>
+                    </div>
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="border-b p-3 last:border-0">
+                        <div className="grid grid-cols-5 gap-4">
+                          <Skeleton className="h-6 w-[120px]" />
+                          <Skeleton className="h-6 w-[150px]" />
+                          <Skeleton className="h-6 w-[80px]" />
+                          <Skeleton className="h-6 w-[100px]" />
+                          <Skeleton className="h-6 w-[60px]" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-4 pt-6">
+                  <h4 className="text-sm font-medium">Carga de archivos</h4>
+                  <div className="rounded-md border p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <Skeleton className="h-10 w-10 rounded-md" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-[200px]" />
+                          <Skeleton className="h-3 w-[150px]" />
+                        </div>
+                      </div>
+                      <Skeleton className="h-4 w-[60px]" />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <Skeleton className="h-4 w-[80px]" />
+                        <Skeleton className="h-4 w-[60px]" />
+                      </div>
+                      <Skeleton className="h-2 w-full" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 pt-2">
+                      <div className="space-y-2">
+                        <Skeleton className="h-3 w-[60px]" />
+                        <Skeleton className="h-4 w-[80px]" />
+                      </div>
+                      <div className="space-y-2">
+                        <Skeleton className="h-3 w-[60px]" />
+                        <Skeleton className="h-4 w-[80px]" />
+                      </div>
+                      <div className="space-y-2">
+                        <Skeleton className="h-3 w-[60px]" />
+                        <Skeleton className="h-4 w-[80px]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-md border p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <Skeleton className="h-10 w-10 rounded-md" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-[180px]" />
+                          <Skeleton className="h-3 w-[120px]" />
+                        </div>
+                      </div>
+                      <Skeleton className="h-4 w-[60px]" />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <Skeleton className="h-4 w-[80px]" />
+                        <Skeleton className="h-4 w-[60px]" />
+                      </div>
+                      <Skeleton className="h-2 w-full" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 pt-2">
+                      <div className="space-y-2">
+                        <Skeleton className="h-3 w-[60px]" />
+                        <Skeleton className="h-4 w-[80px]" />
+                      </div>
+                      <div className="space-y-2">
+                        <Skeleton className="h-3 w-[60px]" />
+                        <Skeleton className="h-4 w-[80px]" />
+                      </div>
+                      <div className="space-y-2">
+                        <Skeleton className="h-3 w-[60px]" />
+                        <Skeleton className="h-4 w-[80px]" />
+                      </div>
                     </div>
                   </div>
                 </div>
