@@ -3,9 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -13,23 +11,23 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import Image from "next/image"
-import { login } from "@/app/api/services/auth.service"
+import { useTranslation } from "@/hooks/use-translation"
+import { useAuth } from "@/app/api/auth/AuthContext"
 
-const loginSchema = z.object({
-  email: z.string().email({ message: "Ingresa un correo electrónico válido" }),
-  password: z.string().min(6, { message: "La contraseña debe tener al menos 6 caracteres" }),
-})
-
-type LoginFormValues = z.infer<typeof loginSchema>
+type LoginFormValues = {
+  email: string
+  password: string
+}
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
+  const { t } = useTranslation()
+  const { login } = useAuth()
 
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -40,23 +38,32 @@ export function LoginForm() {
     try {
       setIsLoading(true)
       // Aquí iría tu lógica de autenticación
-      const response = await login(data.email, data.password)
+      const response = await login({ email: data.email, password: data.password })
       
-      toast({
-        title: "Inicio de sesión exitoso",
-        description: "Bienvenido a FinanzApp",
-      })
-      
-      router.push("/dashboard") // O la ruta que prefieras después del login
+      if ( response ) {
+        toast({
+          title: t('server.success'),
+          description: t('server.welcome'),
+          variant: "success",
+        })
+      }
+
+      else {
+        toast({
+          title: t('server.error'),
+          description: `${t('unauthorized.unauthorized')}. ${t('unauthorized.credential_incorrect')}`,
+          variant: "destructive",
+        })
+        setIsLoading(false)
+      }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "No se pudo iniciar sesión. Por favor, verifica tus credenciales.",
+        title: t('server.error'),
+        description: `${t('unauthorized.unauthorized')}. ${t('unauthorized.credential_incorrect')}`,
         variant: "destructive",
       })
-    } finally {
       setIsLoading(false)
-    }
+    } 
   }
 
   return (

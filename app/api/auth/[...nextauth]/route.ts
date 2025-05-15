@@ -8,14 +8,14 @@ declare module "next-auth" {
     token?: string;
     user?: {
       id?: string;
-      roles?: string;
-      access?: string;
-      accessTokenExpiresIn?: string;
+      name?: string;
       email?: string;
-      avatar?: string;
-      full_name?: string;
-      refresh?: string;
+      phone?: string;
+      rol?: string;
+      username?: string;
+      status?: boolean;
       permissions?: string[];
+      token?: string;
     } & DefaultSession["user"];
   }
 }
@@ -29,30 +29,29 @@ const handler = NextAuth({
     Credentials({
       name: 'Credentials',
       credentials: {
-        roles: {},
-        username: {},
-        password: {},
+        
         id: {},
-        access: {},
-        accessTokenExpiresIn: {},
+        name: {},
         email: {},
-        avatar: {},
-        full_name: {},
-        refresh: {},
-        permissions: {}
+        phone: {},
+        rol: {},
+        username: {},
+        status: {},
+        permissions: {},
+        token: {},
       },
       async authorize(credentials) {
 
         const user = {
+          name: credentials?.name ?? '',
           id: credentials?.id ?? '',
-          roles: credentials?.roles ?? '',
-          access: credentials?.access ?? '',
-          accessTokenExpiresIn: credentials?.accessTokenExpiresIn ?? '',
+          rol: credentials?.rol ?? '',
           email: credentials?.email ?? '',
-          avatar: credentials?.avatar ?? '',
-          full_name: credentials?.full_name ?? '',
-          refresh: credentials?.refresh ?? '',
-          permissions: credentials?.permissions ?? []
+          phone: credentials?.phone ?? '',
+          username: credentials?.username ?? '',
+          status: credentials?.status ?? '',
+          permissions: credentials?.permissions ?? [],
+          token: credentials?.token ?? ''
         }
 
         if (user) return user;

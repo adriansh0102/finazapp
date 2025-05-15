@@ -16,6 +16,7 @@ import {
   Layers,
   Package,
   PieChart,
+  Users,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -101,25 +102,11 @@ export function AppSidebar() {
       href: "/",
     },
     {
-      icon: ClipboardList,
-      label: t("sidebar.transactions"),
-      href: "/transactions",
+      icon: Users,
+      label: t("sidebar.users"),
+      href: "/users",
     },
-    {
-      icon: BarChart3,
-      label: t("sidebar.budgets"),
-      href: "/budgets",
-    },
-    {
-      icon: PieChart,
-      label: t("sidebar.reports"),
-      href: "/reports",
-      subItems: [
-        { label: t("sidebar.monthly"), href: "/reports/monthly" },
-        { label: t("sidebar.annual"), href: "/reports/annual" },
-        { label: t("sidebar.categories"), href: "/reports/categories" },
-      ],
-    },
+    
     {
       icon: Cog,
       label: t("sidebar.configuration"),
@@ -140,16 +127,7 @@ export function AppSidebar() {
       label: "Formularios",
       href: "/forms",
     },
-    {
-      icon: Layers,
-      label: "Tablas",
-      href: "/tables",
-    },
-    {
-      icon: FileText,
-      label: t("sidebar.documentation"),
-      href: "/documentation",
-    },
+    
   ]
 
   // Mobile sidebar

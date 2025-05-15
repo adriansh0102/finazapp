@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, ChevronDown, Menu, User } from "lucide-react"
+import { Bell, ChevronDown, Menu, User, Settings, CreditCard, LogOut, UserCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "@/hooks/use-translation"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -60,11 +60,19 @@ export function Header() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{t("header.user_menu.title")}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>{t("header.user_menu.profile")}</DropdownMenuItem>
-            <DropdownMenuItem>{t("header.user_menu.settings")}</DropdownMenuItem>
-            <DropdownMenuItem>{t("header.user_menu.billing")}</DropdownMenuItem>
+            <DropdownMenuItem>
+              <UserCircle className="mr-2 h-4 w-4" />
+              {t("header.user_menu.profile")}
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Settings className="mr-2 h-4 w-4" />
+              {t("header.user_menu.settings")}
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>{t("header.user_menu.logout")}</DropdownMenuItem>
+            <DropdownMenuItem>
+              <LogOut className="mr-2 h-4 w-4" />
+              {t("header.user_menu.logout")}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

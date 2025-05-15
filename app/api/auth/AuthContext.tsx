@@ -7,20 +7,18 @@ import { useRouter } from "next/navigation";
 import { Permission } from "@/hooks/permissions/permissions.type";
 
 interface UserSession {
-  refresh: string;
-  access: string;
-  id: string;
-  email: string;
-  full_name: string;
-  avatar: string | null;
-  roles: string[];
-  permissions: string[];
-  accessTokenExpiresIn: number;
+  id?: string;
+      name?: string;
+      email?: string;
+      phone?: string;
+      rol?: string;
+      username?: string;
+      status?: boolean;
+      permissions?: string[];
+      token?: string;
 }
 
 interface AuthContextType {
-  token: string;
-  refresh: string;
   permissions: string[];
   user: UserSession | null;
   loading: boolean;
@@ -42,8 +40,6 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [token, setToken] = useState<string>("");
-  const [refresh, setRefresh] = useState<string>("");
   const [permissions, setPermissions] = useState<string[]>([]);
   const [user, setUser] = useState<UserSession | null>(null);
   const [loading, setLoading] = useState(true);
@@ -63,42 +59,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const updateContext = async (
     userUpd: UserSession = {
-      refresh: "",
-      access: "",
       id: "",
+      name: "",
       email: "",
-      full_name: "",
-      avatar: null,
-      roles: [],
+      phone: "",
+      rol: "",
+      username: "",
+      status: false,
       permissions: [],
-      accessTokenExpiresIn: 0,
+      token: "",
     },
-    tokenUpd: string = "",
-    refreshUpd: string = "",
-    permissionsUpd: string[] = []
   ) => {
+
     setUser(userUpd);
-    setToken(tokenUpd);
-    setRefresh(refreshUpd);
-    setPermissions(permissionsUpd);
-    await saveCookies(tokenUpd);
+    setPermissions(userUpd.permissions || []);
   };
 
   const login = async ({ email, password }: LoginDataI): Promise<boolean> => {
     try {
       const resp = await LoginAuth( email, password );
       const signin = await signIn("credentials", {
-        ...resp?.data,
-        roles: resp?.data.roles,
+        ...resp?.data.data,
         redirect: false,
       });
       if (resp?.status === 200 && signin?.ok) {
         await updateContext(
-          resp.data,
-          resp.data.access,
-          resp.data.refresh,
-          resp.data.permissions
+          resp.data.data,
         );
+
         route.push("/");
         return true;
       } else {
@@ -121,7 +109,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        if (session?.user?.refresh) {
+        if (session?.user?.token) {
           // await verifyJWT(session.user.refresh)       
         }
       } catch {
@@ -141,13 +129,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return (
     <AuthContext.Provider
       value={{
-        token,
         permissions,
         user,
         loading,
         login,
         logout,
-        refresh,
         validatePermissions,
       }}
     >
