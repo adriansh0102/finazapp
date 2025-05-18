@@ -13,21 +13,21 @@ import { ThemeToggle } from "@/components/theme-toggle"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "FinanzApp",
-  description: "Aplicación para gestionar tus finanzas empresariales y personales",
-  manifest: '/manifest.json',
+  title: process.env.NEXT_PUBLIC_TITLE || 'FinanzApp',
+  description: process.env.NEXT_PUBLIC_DESCRIPTION || 'Aplicación para gestionar tus finanzas empresariales y personales',
+  manifest: process.env.NEXT_PUBLIC_MANIFEST || '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'FinanzApp',
+    title: process.env.NEXT_PUBLIC_TITLE || 'FinanzApp',
   },
   icons: {
     icon: [
-      { url: 'icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: 'icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: process.env.NEXT_PUBLIC_ICONS_ICON_192X192 || 'icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: process.env.NEXT_PUBLIC_ICONS_ICON_512X512 || 'icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: 'icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: process.env.NEXT_PUBLIC_ICONS_APPLE_192X192 || 'icons/apple-icon-192x192.png', sizes: '192x192', type: 'image/png' },
     ],
   },
 }
